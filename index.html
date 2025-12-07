@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Consulta por Cédula</title>
+<style>
+    body {
+        font-family: Arial;
+        background: #f4f4f4;
+        padding: 20px;
+    }
+    .card {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        max-width: 500px;
+        margin: auto;
+        box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+    input, button {
+        padding: 10px;
+        font-size: 16px;
+        width: 100%;
+        margin-top: 10px;
+    }
+    table {
+        margin-top: 20px;
+        width: 100%;
+        border-collapse: collapse;
+    }
+    td {
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <h2>Consulta de Datos por Cédula</h2>
+
+    <input type="text" id="cedula" placeholder="Ingrese cédula...">
+    <button onclick="buscar()">Buscar</button>
+
+    <div id="resultado"></div>
+</div>
+
+<script>
+let datos = [];
+
+fetch("datos.json")
+    .then(res => res.json())
+    .then(data => datos = data);
+
+function buscar() {
+    const ced = document.getElementById("cedula").value.trim();
+    const persona = datos.find(p => String(p.CEDULA) === ced);
+
+    const resDiv = document.getElementById("resultado");
+
+    if (!persona) {
+        resDiv.innerHTML = "<p><b>No se encontró la cédula.</b></p>";
+        return;
+    }
+
+    resDiv.innerHTML = `
+        <table>
+            <tr><td><b>NOMBRE:</b></td><td>${persona.NOMBRE}</td></tr>
+            <tr><td><b>TPERSONA:</b></td><td>${persona.TPERSONA}</td></tr>
+            <tr><td><b>CARGO:</b></td><td>${persona.CARGO}</td></tr>
+            <tr><td><b>CARGO2:</b></td><td>${persona.CARGO2}</td></tr>
+            <tr><td><b>DEPENDENCIA:</b></td><td>${persona.DEPENDENCIA}</td></tr>
+            <tr><td><b>DEPENDENCIA2:</b></td><td>${persona.DEPENDENCIA2}</td></tr>
+            <tr><td><b>QNA_MOV:</b></td><td>${persona.QNA_MOV}</td></tr>
+            <tr><td><b>AÑO_MO:</b></td><td>${persona.AÑO_MO}</td></tr>
+            <tr><td><b>ENTIDAD:</b></td><td>${persona.ENTIDAD}</td></tr>
+            <tr><td><b>ENTIDAD2:</b></td><td>${persona.ENTIDAD2}</td></tr>
+        </table>
+    `;
+}
+</script>
+
+</body>
+</html>
